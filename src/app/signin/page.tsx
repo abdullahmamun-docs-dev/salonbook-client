@@ -43,16 +43,16 @@ export default function SignInPage() {
     setError("");
     setGoogleLoading(true);
 
-    // const { error } = await authClient.signIn.social({
-    //   provider: "google",
-    //   callbackURL: "/",
-    // });
-
-
     const { error } = await authClient.signIn.social({
-  provider: "google",
-  callbackURL: "http://localhost:3000/",
-});
+      provider: "google",
+      callbackURL: "/",
+    });
+
+
+//     const { error } = await authClient.signIn.social({
+//   provider: "google",
+//   callbackURL: "http://localhost:3000/",
+// });
 
     if (error) {
       setError(error.message || "Unable to sign in with Google.");

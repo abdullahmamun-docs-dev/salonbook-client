@@ -43,7 +43,8 @@ export default function MyAppointmentsPage() {
         }
 
         const response = await fetch(
-          "http://localhost:5000/api/appointments/my",
+          // "http://localhost:5000/api/appointments/my",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/my`,
           {
             credentials: "include",
             cache: "no-store",
@@ -115,7 +116,8 @@ export default function MyAppointmentsPage() {
             setCancellingId(appointmentId);
 
             const response = await fetch(
-              `http://localhost:5000/api/appointments/${appointmentId}/cancel`,
+              // `http://localhost:5000/api/appointments/${appointmentId}/cancel`,
+              `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/${appointmentId}/cancel`,
               {
                 method: "PATCH",
                 credentials: "include",
@@ -173,7 +175,8 @@ export default function MyAppointmentsPage() {
       setPayingId(appointmentId);
 
       const response = await fetch(
-        "http://localhost:5000/api/payments/create-checkout-session",
+        // "http://localhost:5000/api/payments/create-checkout-session",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/payments/create-checkout-session`,
         {
           method: "POST",
           headers: {

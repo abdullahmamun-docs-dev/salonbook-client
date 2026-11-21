@@ -66,7 +66,8 @@ export default function BookAppointmentPage() {
         setError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/services/${id}`
+          // `http://localhost:5000/api/services/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services/${id}`
         );
 
         if (!response.ok) {
@@ -98,7 +99,8 @@ export default function BookAppointmentPage() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/appointments",
+        // "http://localhost:5000/api/appointments",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/appointments`,
         {
           method: "POST",
           credentials: "include",

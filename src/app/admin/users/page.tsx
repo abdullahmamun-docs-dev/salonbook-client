@@ -44,7 +44,7 @@ export default function AdminUsersPage() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/users/admin/all",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users/admin/all`,
           {
             credentials: "include",
           }
@@ -84,8 +84,8 @@ export default function AdminUsersPage() {
       setError("");
 
       const endpoint = blocked
-        ? `http://localhost:5000/api/users/${userId}/unblock`
-        : `http://localhost:5000/api/users/${userId}/block`;
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}/unblock`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}/block`;
 
       const response = await fetch(endpoint, {
         method: "PATCH",

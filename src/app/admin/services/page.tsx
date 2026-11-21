@@ -101,7 +101,7 @@ export default function ManageServicesPage() {
   const loadServices = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/services/admin/all",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/services/admin/all`,
         {
           credentials: "include",
         }
@@ -152,7 +152,7 @@ export default function ManageServicesPage() {
     const fetchServices = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/services/admin/all",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services/admin/all`,
           {
             credentials: "include",
           }
@@ -279,7 +279,7 @@ export default function ManageServicesPage() {
       formData.append("image", file);
 
       const response = await fetch(
-        "http://localhost:5000/api/upload/image",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/upload/image`,
         {
           method: "POST",
           credentials: "include",
@@ -359,10 +359,9 @@ export default function ManageServicesPage() {
           : {}),
       };
 
-      const url = editingService
-        ? `http://localhost:5000/api/services/${editingService._id}`
-        : "http://localhost:5000/api/services";
-
+const url = editingService
+  ? `${process.env.NEXT_PUBLIC_API_URL}/api/services/${editingService._id}`
+  : `${process.env.NEXT_PUBLIC_API_URL}/api/services`;
       const response = await fetch(url, {
         method: editingService ? "PUT" : "POST",
         headers: {
@@ -419,7 +418,7 @@ export default function ManageServicesPage() {
           : "active";
 
       const response = await fetch(
-        `http://localhost:5000/api/services/${service._id}/status`,
+       `${process.env.NEXT_PUBLIC_API_URL}/api/services/${service._id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -473,7 +472,7 @@ export default function ManageServicesPage() {
         onClick: async () => {
           try {
             const response = await fetch(
-              `http://localhost:5000/api/services/${service._id}`,
+              `${process.env.NEXT_PUBLIC_API_URL}/api/services/${service._id}`,
               {
                 method: "DELETE",
                 credentials: "include",

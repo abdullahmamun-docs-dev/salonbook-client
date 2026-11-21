@@ -49,7 +49,7 @@ export default function AdminAppointmentsPage() {
   const fetchAppointments = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/appointments/admin/all",
+       `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/admin/all`,
         {
           credentials: "include",
         }
@@ -87,7 +87,7 @@ export default function AdminAppointmentsPage() {
     const loadAppointments = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/appointments/admin/all",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/admin/all`,
           {
             credentials: "include",
           }
@@ -135,7 +135,7 @@ export default function AdminAppointmentsPage() {
       setActionId(appointmentId);
 
       const response = await fetch(
-        `http://localhost:5000/api/appointments/${appointmentId}/confirm`,
+       `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/${appointmentId}/confirm`,
         {
           method: "PATCH",
           credentials: "include",
@@ -178,7 +178,7 @@ export default function AdminAppointmentsPage() {
           setActionId(appointmentId);
 
           const response = await fetch(
-            `http://localhost:5000/api/appointments/${appointmentId}/cancel-admin`,
+           `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/${appointmentId}/cancel-admin`,
             {
               method: "PATCH",
               credentials: "include",

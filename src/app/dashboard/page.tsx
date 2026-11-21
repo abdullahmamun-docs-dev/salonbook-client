@@ -43,12 +43,18 @@ export default function DashboardPage() {
       try {
         setLoading(true);
 
+        // const response = await fetch(
+        //   "http://localhost:5000/api/appointments/my",
+        //   {
+        //     credentials: "include",
+        //   }
+        // );
         const response = await fetch(
-          "http://localhost:5000/api/appointments/my",
-          {
-            credentials: "include",
-          }
-        );
+  `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/my`,
+  {
+    credentials: "include",
+  }
+);
 
         if (!response.ok) {
           throw new Error("Failed to fetch appointments");

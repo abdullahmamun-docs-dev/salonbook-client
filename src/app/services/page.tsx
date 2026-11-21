@@ -51,7 +51,8 @@ export default function ServicesPage() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/services"
+          // "http://localhost:5000/api/services"
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services`
         );
 
         if (!response.ok) {

@@ -34,7 +34,9 @@ export default function Home() {
         setLoading(true);
         setError("");
 
-        const response = await fetch("http://localhost:5000/api/services");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch services");
@@ -188,51 +190,51 @@ export default function Home() {
           )}
 
           {/* Services */}
-            {!loading && !error && services.length > 0 && (
-  <div className="services-grid">
-    {services.map((service) => (
-      <article key={service._id} className="service-card">
-        <div className="service-image-wrapper">
-          <img
-            src={service.image}
-            alt={service.serviceName}
-          />
+          {!loading && !error && services.length > 0 && (
+            <div className="services-grid">
+              {services.map((service) => (
+                <article key={service._id} className="service-card">
+                  <div className="service-image-wrapper">
+                    <img
+                      src={service.image}
+                      alt={service.serviceName}
+                    />
 
-          <span className="service-category">
-            {service.category}
-          </span>
-        </div>
+                    <span className="service-category">
+                      {service.category}
+                    </span>
+                  </div>
 
-        <div className="service-content">
-          <div className="service-content-top">
-            <h3>{service.serviceName}</h3>
+                  <div className="service-content">
+                    <div className="service-content-top">
+                      <h3>{service.serviceName}</h3>
 
-            <p>{service.description}</p>
-          </div>
+                      <p>{service.description}</p>
+                    </div>
 
-          <div className="service-bottom">
-            <div className="service-meta">
-              <span>
-                <Clock3 size={15} />
-                {service.duration} min
-              </span>
+                    <div className="service-bottom">
+                      <div className="service-meta">
+                        <span>
+                          <Clock3 size={15} />
+                          {service.duration} min
+                        </span>
 
-              <strong>৳{service.price}</strong>
+                        <strong>৳{service.price}</strong>
+                      </div>
+
+                      <Link
+                        href={`/services/${service._id}`}
+                        className="details-button"
+                      >
+                        View Details
+                        <ArrowRight size={15} />
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
-
-            <Link
-              href={`/services/${service._id}`}
-              className="details-button"
-            >
-              View Details
-              <ArrowRight size={15} />
-            </Link>
-          </div>
-        </div>
-      </article>
-    ))}
-  </div>
-)}
+          )}
         </div>
       </section>
 

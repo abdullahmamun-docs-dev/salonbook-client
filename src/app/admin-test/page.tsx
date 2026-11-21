@@ -10,11 +10,11 @@ export default function AdminTestPage() {
     const testAdminAccess = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/test",
-          {
-            credentials: "include",
-          }
-        );
+  `${process.env.NEXT_PUBLIC_API_URL}/api/admin/test`,
+  {
+    credentials: "include",
+  }
+);
 
         const data = await response.json();
 

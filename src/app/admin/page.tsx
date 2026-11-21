@@ -70,13 +70,13 @@ export default function AdminDashboard() {
         const [appointmentsResponse, servicesResponse] =
           await Promise.all([
             fetch(
-              "http://localhost:5000/api/appointments/admin/all",
+              `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/admin/all`,
               {
                 credentials: "include",
               }
             ),
             fetch(
-              "http://localhost:5000/api/services",
+              `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
               {
                 credentials: "include",
               }

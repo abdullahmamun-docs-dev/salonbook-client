@@ -39,7 +39,7 @@ export default function AdminTransactionsPage() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/payments/admin/all",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/payments/admin/all`,
           {
             credentials: "include",
           }

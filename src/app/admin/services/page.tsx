@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -91,9 +92,6 @@ export default function ManageServicesPage() {
   const [form, setForm] =
     useState<ServiceForm>(emptyForm);
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
   const fileInputRef =
     useRef<HTMLInputElement | null>(null);
 
@@ -118,11 +116,10 @@ export default function ManageServicesPage() {
       }
 
       setServices(data);
-      setError("");
     } catch (error) {
       console.error("Load services error:", error);
 
-      setError(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Failed to load services"
@@ -171,13 +168,12 @@ export default function ManageServicesPage() {
 
         if (!cancelled) {
           setServices(data);
-          setError("");
         }
       } catch (error) {
         console.error("Load services error:", error);
 
         if (!cancelled) {
-          setError(
+          toast.error(
             error instanceof Error
               ? error.message
               : "Failed to load services"
@@ -200,8 +196,6 @@ export default function ManageServicesPage() {
   const openAddForm = () => {
     setEditingService(null);
     setForm(emptyForm);
-    setError("");
-    setSuccess("");
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -221,9 +215,6 @@ export default function ManageServicesPage() {
       duration: String(service.duration),
       image: service.image,
     });
-
-    setError("");
-    setSuccess("");
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -268,17 +259,14 @@ export default function ManageServicesPage() {
       return;
     }
 
-    setError("");
-    setSuccess("");
-
     if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file.");
+      toast.error("Please select a valid image file.");
       event.target.value = "";
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setError("Image size must be less than 5MB.");
+      toast.error("Image size must be less than 5MB.");
       event.target.value = "";
       return;
     }
@@ -312,11 +300,11 @@ export default function ManageServicesPage() {
         image: data.imageUrl,
       }));
 
-      setSuccess("Image uploaded successfully.");
+      toast.success("Image uploaded successfully.");
     } catch (error) {
       console.error("Image upload error:", error);
 
-      setError(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Failed to upload image"
@@ -334,9 +322,6 @@ export default function ManageServicesPage() {
   ) => {
     event.preventDefault();
 
-    setError("");
-    setSuccess("");
-
     if (
       !form.serviceName.trim() ||
       !form.category.trim() ||
@@ -345,7 +330,7 @@ export default function ManageServicesPage() {
       !form.duration ||
       !form.image.trim()
     ) {
-      setError("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
       return;
     }
 
@@ -353,7 +338,7 @@ export default function ManageServicesPage() {
       Number(form.price) <= 0 ||
       Number(form.duration) <= 0
     ) {
-      setError(
+      toast.error(
         "Price and duration must be greater than zero."
       );
       return;
@@ -395,7 +380,7 @@ export default function ManageServicesPage() {
         );
       }
 
-      setSuccess(
+      toast.success(
         editingService
           ? "Service updated successfully."
           : "Service created successfully."
@@ -413,7 +398,7 @@ export default function ManageServicesPage() {
     } catch (error) {
       console.error("Save service error:", error);
 
-      setError(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Failed to save service"
@@ -428,9 +413,6 @@ export default function ManageServicesPage() {
   */
   const toggleStatus = async (service: Service) => {
     try {
-      setError("");
-      setSuccess("");
-
       const newStatus =
         service.status === "active"
           ? "inactive"
@@ -459,7 +441,7 @@ export default function ManageServicesPage() {
         );
       }
 
-      setSuccess(
+      toast.success(
         `Service ${
           newStatus === "active"
             ? "activated"
@@ -471,7 +453,7 @@ export default function ManageServicesPage() {
     } catch (error) {
       console.error("Toggle status error:", error);
 
-      setError(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Failed to update service status"
@@ -490,9 +472,6 @@ export default function ManageServicesPage() {
         label: "Delete",
         onClick: async () => {
           try {
-            setError("");
-            setSuccess("");
-
             const response = await fetch(
               `http://localhost:5000/api/services/${service._id}`,
               {
@@ -514,10 +493,6 @@ export default function ManageServicesPage() {
               "Service deleted successfully."
             );
 
-            setSuccess(
-              "Service deleted successfully."
-            );
-
             await loadServices();
           } catch (error) {
             console.error(
@@ -525,13 +500,11 @@ export default function ManageServicesPage() {
               error
             );
 
-            const message =
+            toast.error(
               error instanceof Error
                 ? error.message
-                : "Failed to delete service";
-
-            toast.error(message);
-            setError(message);
+                : "Failed to delete service"
+            );
           }
         },
       },
@@ -589,38 +562,6 @@ export default function ManageServicesPage() {
       </header>
 
       <main className="manage-services-content">
-        {/* Messages */}
-
-        {error && (
-          <div className="manage-message error">
-            <X size={17} />
-
-            <span>{error}</span>
-
-            <button
-              type="button"
-              onClick={() => setError("")}
-            >
-              <X size={15} />
-            </button>
-          </div>
-        )}
-
-        {success && (
-          <div className="manage-message success">
-            <Check size={17} />
-
-            <span>{success}</span>
-
-            <button
-              type="button"
-              onClick={() => setSuccess("")}
-            >
-              <X size={15} />
-            </button>
-          </div>
-        )}
-
         {/* Overview */}
 
         <section className="manage-overview">

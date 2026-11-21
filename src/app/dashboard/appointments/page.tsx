@@ -1,7 +1,8 @@
+
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
@@ -34,17 +35,18 @@ export default function MyAppointmentsPage() {
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [payingId, setPayingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadAppointments = async () => {
+  const loadAppointments = useCallback(
+    async (showLoading = false) => {
       try {
-        setLoading(true);
+        if (showLoading) {
+          setLoading(true);
+        }
 
         const response = await fetch(
           "http://localhost:5000/api/appointments/my",
           {
             credentials: "include",
+            cache: "no-store",
           }
         );
 
@@ -56,34 +58,47 @@ export default function MyAppointmentsPage() {
           );
         }
 
-        if (!cancelled) {
-          setAppointments(data);
-          setError("");
-          setLoading(false);
-        }
+        setAppointments(data);
+        setError("");
       } catch (error) {
         console.error("Appointments error:", error);
 
-        if (!cancelled) {
+        if (showLoading) {
           setError(
             error instanceof Error
               ? error.message
               : "Unable to load appointments."
           );
+        }
+      } finally {
+        if (showLoading) {
           setLoading(false);
         }
       }
+    },
+    []
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const initialLoad = async () => {
+      if (cancelled) {
+        return;
+      }
+
+      await loadAppointments(true);
     };
 
-    loadAppointments();
+    initialLoad();
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [loadAppointments]);
 
   const handleRetry = () => {
-    window.location.reload();
+    loadAppointments(true);
   };
 
   const handleCancelAppointment = async (
@@ -194,7 +209,7 @@ export default function MyAppointmentsPage() {
           ? error.message
           : "Unable to start payment."
       );
-    } finally {
+
       setPayingId(null);
     }
   };
@@ -224,6 +239,7 @@ export default function MyAppointmentsPage() {
             <p>
               Salon<span>Book</span>
             </p>
+
             <small>Beauty & Care</small>
           </div>
         </Link>
@@ -312,6 +328,7 @@ export default function MyAppointmentsPage() {
 
             <div>
               <span>Total</span>
+
               <strong>
                 {loading ? "..." : appointments.length}
               </strong>
@@ -325,6 +342,7 @@ export default function MyAppointmentsPage() {
 
             <div>
               <span>Pending</span>
+
               <strong>
                 {loading ? "..." : pendingCount}
               </strong>
@@ -338,6 +356,7 @@ export default function MyAppointmentsPage() {
 
             <div>
               <span>Confirmed</span>
+
               <strong>
                 {loading ? "..." : confirmedCount}
               </strong>
@@ -351,6 +370,7 @@ export default function MyAppointmentsPage() {
 
             <div>
               <span>Paid</span>
+
               <strong>
                 {loading ? "..." : paidCount}
               </strong>
@@ -363,6 +383,7 @@ export default function MyAppointmentsPage() {
           <div className="appointments-panel-header">
             <div>
               <p>BOOKING HISTORY</p>
+
               <h2>Your Appointments</h2>
             </div>
 
